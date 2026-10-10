@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Smart Crop Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-badge">🌱 AgriSmart AI</div>
+                <h1 class="project-title">AI-Based Smart Crop Recommendation System</h1>
+                <p class="project-subtitle">
+                    The system uses soil nutrient composition and climatic data to predict the most suitable crop label using machine learning.
+                </p>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <!-- Alert / Notification Section -->
+            {% if error %}
+            <div class="alert alert-error" role="alert">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-body">
+                    <strong>Input Error:</strong> {{ error }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if prediction %}
+            <div class="result-card" role="region" aria-label="Recommendation Result">
+                <div class="result-header">
+                    <span class="result-tag">Optimal Recommendation</span>
+                    <h2 class="result-title">Recommended Crop: <span class="highlight-crop">{{ prediction|capitalize }}</span></h2>
+                </div>
+                <p class="result-description">
+                    Based on the provided soil nutrients (N-P-K) and environmental conditions (temperature, humidity, pH, and rainfall), 
+                    <strong>{{ prediction|capitalize }}</strong> demonstrates the highest agronomic compatibility.
+                </p>
+                <div class="result-summary-grid">
+                    {% for field in fields %}
+                    <div class="summary-item">
+                        <span class="summary-label">{{ field.label }}</span>
+                        <span class="summary-val">{{ form_data[field.name] }} <small>{{ field.unit }}</small></span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Prediction Form Card -->
+            <section class="form-card">
+                <div class="form-header">
+                    <h2>Enter Soil & Climatic Parameters</h2>
+                    <p>Provide the 7 essential agronomical parameters below to receive an instant crop recommendation.</p>
+                </div>
+
+                <form action="/predict" method="POST" class="crop-form" novalidate>
+                    <div class="form-grid">
+                        {% for field in fields %}
+                        <div class="input-group">
+                            <label for="{{ field.name }}" class="input-label">
+                                {{ field.label }}
+                                <span class="unit-text">({{ field.unit }})</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="{{ field.name }}" 
+                                name="{{ field.name }}" 
+                                class="form-input" 
+                                placeholder="{{ field.placeholder }}" 
+                                value="{{ form_data[field.name] }}"
+                                required
+                            >
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span>Recommend Crop</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Agricultural Disclaimer Note -->
+            <aside class="disclaimer-note">
+                <div class="disclaimer-icon">ℹ️</div>
+                <p class="disclaimer-text">
+                    <strong>Agricultural Disclaimer:</strong> A model prediction is based on historical patterns in the training data and is not a guarantee of real-world agricultural suitability. Farmers and agronomists should always cross-reference localized soil testing, regional irrigation availability, seasonal pest forecasts, and extension guidelines before sowing.
+                </p>
+            </aside>
+        </main>
+
+        <footer class="app-footer">
+            <p>Smart Agriculture AI &bull; Powered by Machine Learning &bull; Flask & Scikit-Learn</p>
+        </footer>
+    </div>
+</body>
+</html>

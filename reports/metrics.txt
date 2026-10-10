@@ -1,0 +1,13 @@
+Crop Recommendation - Summary Metrics
+=============================================
+Model: RandomForestClassifier(n_estimators=100, random_state=42)
+Test Split Ratio: 0.20 (Stratified)
+Test Samples: 440
+---------------------------------------------
+Accuracy:           0.9955 (99.55%)
+Macro Precision:    0.9957
+Weighted Precision: 0.9957
+Macro Recall:       0.9955
+Weighted Recall:    0.9955
+Macro F1-Score:     0.9955
+Weighted F1-Score:  0.9955
